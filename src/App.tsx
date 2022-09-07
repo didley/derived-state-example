@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./App.css";
 
 type Todo = {
@@ -31,23 +31,28 @@ function App() {
   };
 
   function filterTodos(todos: Todo[], filterBy: FilterByOptions) {
-    const isFilter =
-      filterBy.priority || filterBy.status || filterBy.showDeleted;
-
     const todoFilter = (todo: Todo) => {
       const { status, priority } = todo;
 
-      const statusMatch = filterBy.status === status;
-      const priorityMatch = filterBy.priority === priority;
-      // const isDeleted = status === "deleted";
+      const isDeleted = status === "deleted";
+      if (isDeleted && !filterBy.showDeleted) return false;
 
-      // if (isDeleted && !filterBy.showDeleted) return;
-      return statusMatch || priorityMatch;
+      const skipFilter = true;
+
+      const statusMatch = filterBy.status
+        ? filterBy.status === status
+        : skipFilter;
+
+      const priorityMatch = filterBy.priority
+        ? filterBy.priority === priority && filterBy.priority
+        : skipFilter;
+
+      const isMatch = statusMatch && priorityMatch;
+
+      return isMatch;
     };
 
-    if (isFilter) return todos.filter(todoFilter);
-
-    return todos;
+    return todos.filter(todoFilter);
   }
 
   const allTodos = filterTodos(globalTodos, {
@@ -74,35 +79,39 @@ function App() {
           <div>priority: {todo.priority}</div>
         </div>
       ))}
-      <button
-        onClick={() =>
-          setFilterByStatus((prev) =>
-            prev === "completed" ? null : "completed"
-          )
-        }
-        style={{
-          backgroundColor: filterByStatus === "completed" ? "gray" : undefined,
-        }}
-        className="button"
-      >
-        completed
-      </button>
-      <button
-        onClick={() =>
-          setFilterByStatus((prev) =>
-            prev === "incomplete" ? null : "incomplete"
-          )
-        }
-        style={{
-          backgroundColor: filterByStatus === "incomplete" ? "gray" : undefined,
-        }}
-        className="button"
-      >
-        incomplete
-      </button>
-      <button onClick={() => setShowDeleted((prev) => !prev)}>
-        {showDeleted ? "Hide" : "Show"} deleted
-      </button>
+      <div>
+        <button
+          onClick={() =>
+            setFilterByStatus((prev) =>
+              prev === "completed" ? null : "completed"
+            )
+          }
+          style={{
+            backgroundColor:
+              filterByStatus === "completed" ? "gray" : undefined,
+          }}
+          className="button"
+        >
+          completed
+        </button>
+        <button
+          onClick={() =>
+            setFilterByStatus((prev) =>
+              prev === "incomplete" ? null : "incomplete"
+            )
+          }
+          style={{
+            backgroundColor:
+              filterByStatus === "incomplete" ? "gray" : undefined,
+          }}
+          className="button"
+        >
+          incomplete
+        </button>
+        <button onClick={() => setShowDeleted((prev) => !prev)}>
+          {showDeleted ? "Hide" : "Show"} deleted
+        </button>
+      </div>
       <div>
         Priority
         <button
