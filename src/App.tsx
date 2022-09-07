@@ -64,21 +64,7 @@ function App() {
   return (
     <div className="box">
       <h1>Todos</h1>
-      {allTodos.map((todo) => (
-        <div
-          style={{
-            textAlign: "left",
-            backgroundColor: "#f4f4f4",
-            padding: 10,
-            margin: 10,
-            borderRadius: 10,
-          }}
-        >
-          <div>details: {todo.details}</div>
-          <div>completed: {todo.status}</div>
-          <div>priority: {todo.priority}</div>
-        </div>
-      ))}
+
       <div>
         <button
           onClick={() =>
@@ -145,6 +131,21 @@ function App() {
           High
         </button>
       </div>
+      {allTodos.map((todo) => (
+        <div
+          style={{
+            textAlign: "left",
+            backgroundColor: "#f4f4f4",
+            padding: 10,
+            margin: 10,
+            borderRadius: 10,
+          }}
+        >
+          <div>details: {todo.details}</div>
+          <div>completed: {todo.status}</div>
+          <div>priority: {todo.priority}</div>
+        </div>
+      ))}
     </div>
   );
 }
